@@ -2,12 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
-/* *,
-*::before,
-*::after {
-  @apply transition-colors duration-300 ease-in-out;
-} */
-
 @layer base {
   :root {
     /* Main Theme Colors (using Hex) */
@@ -69,3 +63,28 @@
   --color-border: var(--border);
   --color-input: var(--input);
 }
+
+/* Theme Mode Ripple Reveal animations css starts */
+@keyframes ripple-reveal-animation {
+  from {
+    clip-path: circle(0px at var(--ripple-x) var(--ripple-y));
+  }
+  to {
+    clip-path: circle(var(--ripple-radius) at var(--ripple-x) var(--ripple-y));
+  }
+}
+
+/* This is the class our JS adds to trigger the animation */
+.is-rippling::view-transition-new(root) {
+  /* Use our custom animation instead of the browser default */
+  animation: ripple-reveal-animation 600ms ease-in-out;
+}
+
+
+/* --- These rules from before are still needed --- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+/* Theme Mode Ripple Reveal animations css ends */

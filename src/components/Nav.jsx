@@ -52,7 +52,7 @@ const Nav = ({ setFilter, theme, toggleTheme, accent, changeAccent }) => {
             <span className="text-sm font-semibold capitalize">{theme} Mode</span>
           </div>
           <button
-            onClick={toggleTheme}
+            onClick={(e) => toggleTheme(e)}
             className="rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground"
           >
             Toggle
