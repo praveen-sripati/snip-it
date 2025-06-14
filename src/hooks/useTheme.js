@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import lightThemeUrl from 'highlight.js/styles/github.css?url';
+import darkThemeUrl from 'highlight.js/styles/github-dark.css?url';
 
 export const useTheme = () => {
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
@@ -11,6 +13,26 @@ export const useTheme = () => {
     root.classList.add(theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
+
+  // --- NEW: Effect for dynamically swapping the highlight.js theme ---
+  useEffect(() => {
+    const themeLink = document.createElement('link');
+    themeLink.rel = 'stylesheet';
+    themeLink.id = 'highlight-js-theme'; // Give it an ID for easy removal
+
+    // Set the href to the correct stylesheet URL based on the current theme
+    themeLink.href = theme === 'light' ? lightThemeUrl : darkThemeUrl;
+
+    // Find and remove the old theme link if it exists
+    const oldLink = document.getElementById('highlight-js-theme');
+    if (oldLink) {
+      oldLink.remove();
+    }
+    
+    // Add the new theme link to the document's head
+    document.head.appendChild(themeLink);
+
+  }, [theme]); // This effect runs only when the 'theme' changes
 
   useEffect(() => {
     const root = window.document.documentElement;
