@@ -3,6 +3,7 @@ import CodeView from './components/CodeView';
 import Nav from './components/Nav';
 import SnippetCard from './components/SnippetCard';
 import { useTheme } from './hooks/useTheme';
+import { basicAlerts } from './snippets/Alerts/BasicAlerts'; // Assuming you have a data file for alerts
 
 function App() {
   const { theme, toggleTheme, accent, changeAccent } = useTheme();
@@ -11,30 +12,9 @@ function App() {
       id: 1,
       category: 'alert',
       title: 'Basic Alert',
-      html: `<div class="alert success">
-  <span class="close-btn">&times;</span>
-  Success Text
-</div>`,
-      css: `.alert {
-  padding: 1rem 1.5rem;
-  margin-bottom: 1rem;
-  border-radius: 12px; /* Rounded corners */
-  border: 1px solid transparent;
-  position: relative;
-}`,
-      js: `document.addEventListener('DOMContentLoaded', () => {
-  const alertCloseButtons = document.querySelectorAll('.close-btn');
-
-  alertCloseButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const alert = button.parentElement;
-      alert.style.opacity = '0';
-      setTimeout(() => {
-        alert.style.display = 'none';
-      }, 500); // Wait for the transition to finish
-    });
-  });
-});`,
+      alertCategory: 'basic',
+      html: basicAlerts.html,
+      js: basicAlerts.js,
     },
     {
       id: 2,

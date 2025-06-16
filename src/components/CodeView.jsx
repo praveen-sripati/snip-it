@@ -96,36 +96,42 @@ const CodeView = ({ isOpen, onClose, snippet }) => {
 
         <div className="p-4 flex-grow flex flex-col min-h-0">
           <div className="flex border-b border-border mb-4">
-            <button
-              onClick={() => setActiveTab('html')}
-              className={`py-2 px-4 text-sm font-medium ${
-                activeTab === 'html'
-                  ? 'border-b-2 border-primary text-primary'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              HTML
-            </button>
-            <button
-              onClick={() => setActiveTab('css')}
-              className={`py-2 px-4 text-sm font-medium ${
-                activeTab === 'css'
-                  ? 'border-b-2 border-primary text-primary'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              CSS
-            </button>
-            <button
-              onClick={() => setActiveTab('js')}
-              className={`py-2 px-4 text-sm font-medium ${
-                activeTab === 'js'
-                  ? 'border-b-2 border-primary text-primary'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              JS
-            </button>
+            {snippet?.html && (
+              <button
+                onClick={() => setActiveTab('html')}
+                className={`py-2 px-4 text-sm font-medium ${
+                  activeTab === 'html'
+                    ? 'border-b-2 border-primary text-primary'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                HTML
+              </button>
+            )}
+            {snippet?.css && (
+              <button
+                onClick={() => setActiveTab('css')}
+                className={`py-2 px-4 text-sm font-medium ${
+                  activeTab === 'css'
+                    ? 'border-b-2 border-primary text-primary'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                CSS
+              </button>
+            )}
+            {snippet?.js && (
+              <button
+                onClick={() => setActiveTab('js')}
+                className={`py-2 px-4 text-sm font-medium ${
+                  activeTab === 'js'
+                    ? 'border-b-2 border-primary text-primary'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                JS
+              </button>
+            )}
           </div>
           <div className="relative flex-grow">
             {/* The 'hljs' class is automatically added by the library, but you can add it for clarity */}

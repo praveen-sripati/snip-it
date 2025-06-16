@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Alert } from './Alert';
 
 const SnippetCard = ({ snippet, onViewCode }) => {
   const [copied, setCopied] = useState(false);
@@ -12,10 +13,8 @@ const SnippetCard = ({ snippet, onViewCode }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
       <h3 className="text-xl font-bold mb-4">{snippet.title}</h3>
-      <div
-        className="border rounded-md p-4 mb-4"
-        dangerouslySetInnerHTML={{ __html: snippet.html }}
-      ></div>
+      {snippet.category === 'alert' && <Alert snippet={snippet} variant="success" className="mb-4"></Alert>}
+      <hr className='text-gray-300 my-6' />
       <div className="flex justify-between items-center">
         <button
           onClick={() => onViewCode(snippet)}
