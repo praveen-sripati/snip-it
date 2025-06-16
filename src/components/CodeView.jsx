@@ -95,7 +95,7 @@ const CodeView = ({ isOpen, onClose, snippet }) => {
         </div>
 
         <div className="p-4 flex-grow flex flex-col min-h-0">
-          <div className="flex border-b border-border mb-4">
+          <div className="flex items-center border-b border-border mb-4">
             {snippet?.html && (
               <button
                 onClick={() => setActiveTab('html')}
@@ -132,6 +132,9 @@ const CodeView = ({ isOpen, onClose, snippet }) => {
                 JS
               </button>
             )}
+            {snippet?.codePen && 
+                <a className="ml-auto bg-secondary text-secondary-foreground px-2 py-1 rounded-md" href={snippet?.codePen} target='_blank'>Code pen</a>
+            }
           </div>
           <div className="relative flex-grow">
             {/* The 'hljs' class is automatically added by the library, but you can add it for clarity */}

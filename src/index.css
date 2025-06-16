@@ -9,8 +9,16 @@
     --foreground: #020817;
     --card: #FFFFFF;
     --card-foreground: #020817;
-    --primary: #1E40AF; /* A deeper blue for a more professional look */
+    --primary: #1E40AF;
     --primary-foreground: #EFF6FF;
+
+    /* --- Added Secondary --- */
+    --secondary: #e83763;         /* slate-600 */
+    --secondary-foreground: #f9f9fa; /* slate-50 */
+
+    /* --- Added Tertiary --- */
+    --tertiary: #F1F5F9;          /* slate-100 */
+    --tertiary-foreground: #334155; /* slate-700 */
 
     /* Additional Semantic Colors */
     --muted: #F1F5F9;
@@ -30,6 +38,14 @@
     --card-foreground: #F8FAFC;
     --primary: #60A5FA;
     --primary-foreground: #020817;
+
+    /* --- Added Secondary (Dark) --- */
+    --secondary: #fbff2d;         /* slate-700 */
+    --secondary-foreground: #1e1f20; /* slate-100 */
+
+    /* --- Added Tertiary (Dark) --- */
+    --tertiary: #1E293B;          /* slate-800 */
+    --tertiary-foreground: #94A3B8; /* slate-400 */
 
     --muted: #1E293B;
     --muted-foreground: #94A3B8;
@@ -58,6 +74,13 @@
   --color-card-foreground: var(--card-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  
+  /* --- Added Mappings for New Colors --- */
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-foreground: var(--tertiary-foreground);
+
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
