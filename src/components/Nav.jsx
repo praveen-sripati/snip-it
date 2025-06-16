@@ -7,7 +7,7 @@ const Nav = ({ setFilter, theme, toggleTheme, accent, changeAccent }) => {
     <nav className="w-64 bg-card text-card-foreground shadow-md p-4 flex flex-col justify-between">
       {/* ===== Snippet Filters (Top Section) ===== */}
       <div>
-        <h2 className="text-2xl font-bold mb-8">Web Components</h2>
+        <h2 className="text-2xl font-bold mb-8">Snip It</h2>
         <ul className="space-y-2">
           <NavItem label="Alert" onClick={() => setFilter('alert')} />
           <NavItem label="Button" onClick={() => setFilter('button')} />

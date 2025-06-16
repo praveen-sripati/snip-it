@@ -29,6 +29,9 @@
     /* Other Variables */
     --radius: 0.5rem;
     --font-sans: 'Inter', sans-serif;
+
+    --easing-smooth: cubic-bezier(0.23, 1, 0.32, 1);
+    --duration-normal: 600ms;
   }
 
   .dark {

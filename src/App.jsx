@@ -4,6 +4,7 @@ import Nav from './components/Nav';
 import SnippetCard from './components/SnippetCard';
 import { useTheme } from './hooks/useTheme';
 import { basicAlerts, closableAlerts, closableIconAlerts, iconAlerts } from './snippets/Alerts/Alerts'; // Assuming you have a data file for alerts
+import { buttonSnippets } from './snippets/Buttons/Buttons';
 
 function App() {
   const { theme, toggleTheme, accent, changeAccent } = useTheme();
@@ -12,14 +13,7 @@ function App() {
     { ...closableAlerts },
     { ...iconAlerts },
     { ...closableIconAlerts },
-    {
-      id: 5,
-      category: 'button',
-      title: 'Simple Counter',
-      html: `<div class="flex items-center space-x-4"><button id="decrement" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">-</button><span id="count" class="text-xl font-bold">0</span><button id="increment" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">+</button></div>`,
-      css: `/* CSS is handled by Tailwind */`,
-      js: `const decrementButton = document.getElementById('decrement'); /* ... */`,
-    },
+    ...buttonSnippets
   ];
 
   const [selectedSnippet, setSelectedSnippet] = useState(null);

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Alert } from './Alerts/Alert';
+import { Button } from './Buttons/Button';
 
 const SnippetCard = ({ snippet, onViewCode }) => {
   const [copied, setCopied] = useState(false);
@@ -14,6 +15,7 @@ const SnippetCard = ({ snippet, onViewCode }) => {
     <div className="bg-card text-card-foreground rounded-lg shadow-lg p-6 flex flex-col h-full">
       <h3 className="text-xl font-bold mb-4">{snippet.title}</h3>
       {snippet.category === 'alert' && <Alert snippet={snippet} variant="success" className="mb-4"></Alert>}
+      {snippet.category === 'button' && <Button snippet={snippet}></Button>}
       <div className="mt-auto">
         <hr className="text-gray-300 my-6" />
         <div className="flex justify-between items-center">
