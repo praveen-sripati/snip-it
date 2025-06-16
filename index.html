@@ -15,77 +15,128 @@
     class CustomAlert extends HTMLElement {
       constructor() {
         super();
-        this.attachShadow({
-          mode: 'open'
-        });
+        this.attachShadow({ mode: 'open' });
+        this._closeHandler = this._closeHandler.bind(this);
       }
 
       connectedCallback() {
         const position = this.getAttribute('position') || 'top-center';
         const type = this.getAttribute('type') || 'info';
-        const message = this.getAttribute('message') || 'No message provided.';
+        const message = this.getAttribute('message') || '';
+        const subtext = this.getAttribute('subtext') || '';
         const duration = parseInt(this.getAttribute('duration'), 10) || 3000;
+        const showClose = this.hasAttribute('show-close');
 
         this.shadowRoot.innerHTML = `
-      <style>
-        .alert {
-          padding: 1rem 1.5rem;
-          border-radius: 12px;
-          border: 1px solid transparent;
-          position: fixed;
-          z-index: 1000;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-          
-          /* --- THIS IS THE ONLY LINE THAT HAS CHANGED --- */
-          transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease-out;
-          
-          opacity: 0;
-        }
+          <style>
+            .alert {
+              padding: 1rem 1.5rem;
+              border-radius: 12px;
+              border: 1px solid transparent;
+              position: fixed;
+              z-index: 1000;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+              transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease-out;
+              opacity: 0;
+              min-width: 260px;
+              max-width: 400px;
+            }
+            .alert.position-top-left,
+            .alert.position-top-right { transform: translateY(-30px); }
+            .alert.position-top-center { transform: translateX(-50%) translateY(-30px); }
+            .alert.position-bottom-left,
+            .alert.position-bottom-right { transform: translateY(30px); }
+            .alert.position-bottom-center { transform: translateX(-50%) translateY(30px); }
 
-        /* All other CSS rules remain exactly the same */
-        .alert.position-top-left,
-        .alert.position-top-right { transform: translateY(-30px); }
-        .alert.position-top-center { transform: translateX(-50%) translateY(-30px); }
-        .alert.position-bottom-left,
-        .alert.position-bottom-right { transform: translateY(30px); }
-        .alert.position-bottom-center { transform: translateX(-50%) translateY(30px); }
+            .alert.visible { opacity: 1; }
+            .alert.visible.position-top-left,
+            .alert.visible.position-top-right { transform: translateY(0); }
+            .alert.visible.position-top-center { transform: translateX(-50%) translateY(0); }
+            .alert.visible.position-bottom-left,
+            .alert.visible.position-bottom-right { transform: translateY(0); }
+            .alert.visible.position-bottom-center { transform: translateX(-50%) translateY(0); }
 
-        .alert.visible { opacity: 1; }
-        .alert.visible.position-top-left,
-        .alert.visible.position-top-right { transform: translateY(0); }
-        .alert.visible.position-top-center { transform: translateX(-50%) translateY(0); }
-        .alert.visible.position-bottom-left,
-        .alert.visible.position-bottom-right { transform: translateY(0); }
-        .alert.visible.position-bottom-center { transform: translateX(-50%) translateY(0); }
+            .position-top-center { top: 20px; left: 50%; }
+            .position-top-left { top: 20px; left: 20px; }
+            .position-top-right { top: 20px; right: 20px; }
+            .position-bottom-center { bottom: 20px; left: 50%; }
+            .position-bottom-left { bottom: 20px; left: 20px; }
+            .position-bottom-right { bottom: 20px; right: 20px; }
+            
+            .alert.success { background-color: #f0f9eb; border-color: #d4edda; color: #155724; }
+            .alert.info    { background-color: #e7f3fe; border-color: #d1e7fd; color: #0c5460; }
+            .alert.warning { background-color: #fffbe6; border-color: #faecd8; color: #856404; }
+            .alert.error   { background-color: #fbe9e7; border-color: #f5c6cb; color: #7b1e19; }
 
-        .position-top-center { top: 20px; left: 50%; }
-        .position-top-left { top: 20px; left: 20px; }
-        .position-top-right { top: 20px; right: 20px; }
-        .position-bottom-center { bottom: 20px; left: 50%; }
-        .position-bottom-left { bottom: 20px; left: 20px; }
-        .position-bottom-right { bottom: 20px; right: 20px; }
-        
-        .alert.success { background-color: #f0f9eb; border-color: #d4edda; color: #155724; }
-        .alert.info    { background-color: #e7f3fe; border-color: #d1e7fd; color: #0c5460; }
-        .alert.warning { background-color: #fffbe6; border-color: #faecd8; color: #856404; }
-        .alert.error   { background-color: #fbe9e7; border-color: #f5c6cb; color: #7b1e19; }
-      </style>
-      
-      <div class="alert ${type} ${'position-' + position}">
-        ${message}
-      </div>
-    `;
+            .alert-content {
+              display: flex;
+              flex-direction: column;
+              gap: 0.25rem;
+            }
+            .alert-header {
+              font-weight: 600;
+              font-size: 1rem;
+            }
+            .alert-subtext {
+              font-size: 0.92rem;
+              color: #555;
+            }
+            .close-btn {
+              position: absolute;
+              top: 8px;
+              right: 12px;
+              background: transparent;
+              border: none;
+              font-size: 1.2rem;
+              color: inherit;
+              cursor: pointer;
+              opacity: 0.7;
+              transition: opacity 0.2s;
+            }
+            .close-btn:hover {
+              opacity: 1;
+            }
+          </style>
+          <div class="alert ${type} ${'position-' + position}">
+            ${showClose ? `<button class="close-btn" title="Close" aria-label="Close">&times;</button>` : ''}
+            <div class="alert-content">
+              ${message ? `<span class="alert-header">${message}</span>`: ''}
+              ${subtext ? `<span class="alert-subtext">${subtext}</span>` : ''}
+            </div>
+          </div>
+        `;
 
-        // This JS logic remains unchanged
         const alertDiv = this.shadowRoot.querySelector('.alert');
         setTimeout(() => {
           alertDiv.classList.add('visible');
         }, 10);
 
-        setTimeout(() => {
-          alertDiv.classList.remove('visible');
-          alertDiv.addEventListener('transitionend', () => this.remove());
-        }, duration);
+        // Handle close button
+        if (showClose) {
+          const closeBtn = this.shadowRoot.querySelector('.close-btn');
+          closeBtn.addEventListener('click', this._closeHandler);
+        }
+
+        // Auto close after duration, regardless of showClose
+        if (duration > 0) {
+          this._timeout = setTimeout(() => {
+            alertDiv.classList.remove('visible');
+            alertDiv.addEventListener('transitionend', () => this.remove());
+          }, duration);
+        }
+      }
+
+      disconnectedCallback() {
+        if (this._timeout) clearTimeout(this._timeout);
+        const closeBtn = this.shadowRoot.querySelector('.close-btn');
+        if (closeBtn) closeBtn.removeEventListener('click', this._closeHandler);
+      }
+
+      _closeHandler() {
+        if (this._timeout) clearTimeout(this._timeout);
+        const alertDiv = this.shadowRoot.querySelector('.alert');
+        alertDiv.classList.remove('visible');
+        alertDiv.addEventListener('transitionend', () => this.remove());
       }
     }
 

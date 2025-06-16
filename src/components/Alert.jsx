@@ -6,7 +6,13 @@ export const Alert = () => {
   const [position, setPosition] = useState('top-center');
   const [duration, setDuration] = useState(3000);
 
-  const handleOnclick = (message, type, duration, position) => {
+  const handleOnclick = (
+    message = 'Message Header', 
+    subtext = 'Message subtext', 
+    type = 'success', 
+    duration = 3000, 
+    position = 'top-center', 
+    showClose = false) => {
     // Remove any alert that is already visible
     const existingAlert = document.querySelector('custom-alert');
     if (existingAlert) {
@@ -21,6 +27,8 @@ export const Alert = () => {
     alertElement.setAttribute('type', type);
     alertElement.setAttribute('duration', duration || 3000);
     alertElement.setAttribute('position', position);
+    alertElement.setAttribute('subtext', subtext || '');
+    if (showClose) alertElement.setAttribute('show-close', showClose);
 
     // Append it to the body to display it
     document.body.appendChild(alertElement);
@@ -76,7 +84,14 @@ export const Alert = () => {
         </div>
         <button
           class="rounded-md bg-primary px-3 py-2 font-medium text-primary-foreground cursor-pointer mr-4"
-          onClick={() => handleOnclick(`${alertType.slice(0, 1).toUpperCase() + alertType.slice(1)} Text`, alertType, duration, position)}
+          onClick={() => handleOnclick(
+            '',
+            `${alertType.slice(0, 1).toUpperCase() + alertType.slice(1)} Text`,
+            alertType, 
+            duration, 
+            position,
+            false 
+          )}
         >
           Test Alert
         </button>
