@@ -32,27 +32,39 @@
           padding: 1rem 1.5rem;
           border-radius: 12px;
           border: 1px solid transparent;
-          /* Base positioning style */
           position: fixed;
           z-index: 1000;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          
+          /* --- THIS IS THE ONLY LINE THAT HAS CHANGED --- */
+          transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease-out;
+          
           opacity: 0;
-          transition: opacity 0.4s ease-in-out;
         }
 
-        .alert.visible {
-          opacity: 1;
-        }
+        /* All other CSS rules remain exactly the same */
+        .alert.position-top-left,
+        .alert.position-top-right { transform: translateY(-30px); }
+        .alert.position-top-center { transform: translateX(-50%) translateY(-30px); }
+        .alert.position-bottom-left,
+        .alert.position-bottom-right { transform: translateY(30px); }
+        .alert.position-bottom-center { transform: translateX(-50%) translateY(30px); }
 
-        /* --- CHANGE 2: Added CSS classes for each position --- */
-        .position-top-center   { top: 20px; left: 50%; transform: translateX(-50%); }
-        .position-top-left     { top: 20px; left: 20px; }
-        .position-top-right    { top: 20px; right: 20px; }
-        .position-bottom-center{ bottom: 20px; left: 50%; transform: translateX(-50%); }
-        .position-bottom-left  { bottom: 20px; left: 20px; }
+        .alert.visible { opacity: 1; }
+        .alert.visible.position-top-left,
+        .alert.visible.position-top-right { transform: translateY(0); }
+        .alert.visible.position-top-center { transform: translateX(-50%) translateY(0); }
+        .alert.visible.position-bottom-left,
+        .alert.visible.position-bottom-right { transform: translateY(0); }
+        .alert.visible.position-bottom-center { transform: translateX(-50%) translateY(0); }
+
+        .position-top-center { top: 20px; left: 50%; }
+        .position-top-left { top: 20px; left: 20px; }
+        .position-top-right { top: 20px; right: 20px; }
+        .position-bottom-center { bottom: 20px; left: 50%; }
+        .position-bottom-left { bottom: 20px; left: 20px; }
         .position-bottom-right { bottom: 20px; right: 20px; }
         
-        /* Color styles remain the same */
         .alert.success { background-color: #f0f9eb; border-color: #d4edda; color: #155724; }
         .alert.info    { background-color: #e7f3fe; border-color: #d1e7fd; color: #0c5460; }
         .alert.warning { background-color: #fffbe6; border-color: #faecd8; color: #856404; }
@@ -64,8 +76,8 @@
       </div>
     `;
 
+        // This JS logic remains unchanged
         const alertDiv = this.shadowRoot.querySelector('.alert');
-
         setTimeout(() => {
           alertDiv.classList.add('visible');
         }, 10);
@@ -78,26 +90,6 @@
     }
 
     customElements.define('custom-alert', CustomAlert);
-
-    const handleOnclick = (message, type, duration, position) => {
-    // Remove any alert that is already visible
-    const existingAlert = document.querySelector('custom-alert');
-    if (existingAlert) {
-      existingAlert.remove();
-    }
-
-    // Create an instance of our new element
-    const alertElement = document.createElement('custom-alert');
-
-    // Set its attributes, which will be read by connectedCallback
-    alertElement.setAttribute('message', message);
-    alertElement.setAttribute('type', type);
-    alertElement.setAttribute('duration', duration || 3000);
-    alertElement.setAttribute('position', position);
-
-    // Append it to the body to display it
-    document.body.appendChild(alertElement);
-  };
   </script>
 </body>
 

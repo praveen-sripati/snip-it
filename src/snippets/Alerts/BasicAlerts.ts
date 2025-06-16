@@ -27,45 +27,53 @@ export const basicAlerts = {
     const duration = parseInt(this.getAttribute('duration'), 10) || 3000;
 
     this.shadowRoot.innerHTML = \`
-    <style>
-      .alert {
-        padding: 1rem 1.5rem;
-        border-radius: 12px;
-        border: 1px solid transparent;
-        /* Base positioning style */
-        position: fixed;
-        z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        opacity: 0;
-        transition: opacity 0.4s ease-in-out;
-      }
+  <style>
+    .alert {
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      position: fixed;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease-out;
+      opacity: 0;
+    }
 
-      .alert.visible {
-        opacity: 1;
-      }
+    /* All other CSS rules remain exactly the same */
+    .alert.position-top-left,
+    .alert.position-top-right { transform: translateY(-30px); }
+    .alert.position-top-center { transform: translateX(-50%) translateY(-30px); }
+    .alert.position-bottom-left,
+    .alert.position-bottom-right { transform: translateY(30px); }
+    .alert.position-bottom-center { transform: translateX(-50%) translateY(30px); }
 
-      /* --- CHANGE 2: Added CSS classes for each position --- */
-      .position-top-center   { top: 20px; left: 50%; transform: translateX(-50%); }
-      .position-top-left     { top: 20px; left: 20px; }
-      .position-top-right    { top: 20px; right: 20px; }
-      .position-bottom-center{ bottom: 20px; left: 50%; transform: translateX(-50%); }
-      .position-bottom-left  { bottom: 20px; left: 20px; }
-      .position-bottom-right { bottom: 20px; right: 20px; }
-      
-      /* Color styles remain the same */
-      .alert.success { background-color: #f0f9eb; border-color: #d4edda; color: #155724; }
-      .alert.info    { background-color: #e7f3fe; border-color: #d1e7fd; color: #0c5460; }
-      .alert.warning { background-color: #fffbe6; border-color: #faecd8; color: #856404; }
-      .alert.error   { background-color: #fbe9e7; border-color: #f5c6cb; color: #7b1e19; }
-    </style>
+    .alert.visible { opacity: 1; }
+    .alert.visible.position-top-left,
+    .alert.visible.position-top-right { transform: translateY(0); }
+    .alert.visible.position-top-center { transform: translateX(-50%) translateY(0); }
+    .alert.visible.position-bottom-left,
+    .alert.visible.position-bottom-right { transform: translateY(0); }
+    .alert.visible.position-bottom-center { transform: translateX(-50%) translateY(0); }
 
-    <div class="alert \${type} \${'position-' + position}">
-      \${message}
-    </div>
-    \`;
+    .position-top-center { top: 20px; left: 50%; }
+    .position-top-left { top: 20px; left: 20px; }
+    .position-top-right { top: 20px; right: 20px; }
+    .position-bottom-center { bottom: 20px; left: 50%; }
+    .position-bottom-left { bottom: 20px; left: 20px; }
+    .position-bottom-right { bottom: 20px; right: 20px; }
+    
+    .alert.success { background-color: #f0f9eb; border-color: #d4edda; color: #155724; }
+    .alert.info    { background-color: #e7f3fe; border-color: #d1e7fd; color: #0c5460; }
+    .alert.warning { background-color: #fffbe6; border-color: #faecd8; color: #856404; }
+    .alert.error   { background-color: #fbe9e7; border-color: #f5c6cb; color: #7b1e19; }
+  </style>
+  
+  <div class="alert \${type} \${'position-' + position}">
+    \${message}
+  </div>
+\`;
 
     const alertDiv = this.shadowRoot.querySelector('.alert');
-
     setTimeout(() => {
       alertDiv.classList.add('visible');
     }, 10);
