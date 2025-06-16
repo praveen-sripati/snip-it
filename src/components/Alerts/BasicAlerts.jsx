@@ -1,38 +1,10 @@
 import { useState } from 'react';
-import styles from './Alert.module.css';
 
-export const Alert = () => {
+
+export const BasicAlerts = ({ styles , handleOnclick }) => {
   const [alertType, setAlertType] = useState('success');
   const [position, setPosition] = useState('top-center');
   const [duration, setDuration] = useState(3000);
-
-  const handleOnclick = (
-    message = 'Message Header', 
-    subtext = 'Message subtext', 
-    type = 'success', 
-    duration = 3000, 
-    position = 'top-center', 
-    showClose = false) => {
-    // Remove any alert that is already visible
-    const existingAlert = document.querySelector('custom-alert');
-    if (existingAlert) {
-      existingAlert.remove();
-    }
-
-    // Create an instance of our new element
-    const alertElement = document.createElement('custom-alert');
-
-    // Set its attributes, which will be read by connectedCallback
-    alertElement.setAttribute('message', message);
-    alertElement.setAttribute('type', type);
-    alertElement.setAttribute('duration', duration || 3000);
-    alertElement.setAttribute('position', position);
-    alertElement.setAttribute('subtext', subtext || '');
-    if (showClose) alertElement.setAttribute('show-close', showClose);
-
-    // Append it to the body to display it
-    document.body.appendChild(alertElement);
-  };
 
   return (
     <>
@@ -52,7 +24,12 @@ export const Alert = () => {
         <div className={styles.controlsContainer + ' ' + 'mr-6'}>
           <div className={styles.controlGroup}>
             <label htmlFor="position">Position</label>
-            <select id="position" value={position} onChange={(e) => setPosition(e.target.value)} className={styles.select}>
+            <select
+              id="position"
+              value={position}
+              onChange={(e) => setPosition(e.target.value)}
+              className={styles.select}
+            >
               <option value="top-right">Top Right</option>
               <option value="top-center">Top Center</option>
               <option value="top-left">Top Left</option>
@@ -63,7 +40,12 @@ export const Alert = () => {
           </div>
           <div className={styles.controlGroup}>
             <label htmlFor="alertType">Alert Type</label>
-            <select id="alertType" value={alertType} onChange={(e) => setAlertType(e.target.value)} className={styles.select}>
+            <select
+              id="alertType"
+              value={alertType}
+              onChange={(e) => setAlertType(e.target.value)}
+              className={styles.select}
+            >
               <option value="success">Success</option>
               <option value="info">Info</option>
               <option value="warning">Warning</option>
@@ -82,20 +64,25 @@ export const Alert = () => {
             />
           </div>
         </div>
-        <button
-          class="rounded-md bg-primary px-3 py-2 font-medium text-primary-foreground cursor-pointer mr-4"
-          onClick={() => handleOnclick(
+      </div>
+      <button
+        class="rounded-md bg-primary px-3 py-2 font-medium text-primary-foreground cursor-pointer self-center mt-6"
+        onClick={() =>
+          handleOnclick(
             '',
             `${alertType.slice(0, 1).toUpperCase() + alertType.slice(1)} Text`,
-            alertType, 
-            duration, 
+            alertType,
+            duration,
             position,
-            false 
-          )}
-        >
-          Test Alert
-        </button>
-      </div>
+            false,
+            null,
+            null,
+            false
+          )
+        }
+      >
+        Test Alert
+      </button>
     </>
   );
 };
